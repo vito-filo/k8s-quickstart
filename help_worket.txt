@@ -2,4 +2,4 @@ Mandatory arguments:
 
 -i, --ip                        ip of k8s cluster, usually ip of the master node
 -t, --token                     token for cluster connection, given from "kubeadm init" command
--dt, --discovery-token          discovery-token for cluster connection, given from "kubeadm init" command
+-ca, --ca-certificate           ca-certificate of the token given from "kubeadm init" command
