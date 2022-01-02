@@ -1,3 +1,6 @@
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 for arg in "$@"
 do
     case $arg in
@@ -11,8 +14,8 @@ do
             shift
             shift
         ;;
-        -dt | --discovery-token)
-            discovery_token=$2
+        -ca | --ca-certificate)
+            ca=$2
             shift
             shift
         ;;
@@ -29,12 +32,15 @@ do
 done
 if [[ $ip != "" && $token!="" &&  $discovery_token!="" ]]
 then
+    printf "${RED}Step 1/3: install Docker ${NC}\n"
     sudo apt-get update && sudo apt-get install -qy docker.io
     sudo apt-get update && sudo apt-get install -y apt-transport-https && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - OK
+    printf "${RED}Step 2/3: install Kubernetes tools ${NC}\n"
     echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list && sudo apt-get update
     sudo apt-get update && sudo apt-get install -yq kubelet kubeadm kubernetes-cni
     sudo apt-mark hold kubelet kubeadm kubectl
-    kubeadm join $ip --token $token --discovery-token-ca-cert-hash $discovery_token
+    printf "${RED}Step 3/3: Join the cluster ${NC}\n"
+    kubeadm join $ip --token $token --discovery-token-ca-cert-hash $ca
 else
     echo "Invalid parameters";
     cat worker_help.txt
