@@ -10,12 +10,12 @@ do
             shift
         ;;
         -h|--help)
-            cat master_help.txt
+            cat help_master.txt
             exit 1
         ;;
         -*|--*)
             echo "Unknown argument $1"
-            cat worker_help.txt
+            cat help_master.txt
             exit 1
         ;;
     esac
@@ -33,5 +33,5 @@ then
     sudo kubeadm init --apiserver-advertise-address=$ip
 else
     echo "Invalid parameters";
-    cat master_help.txt
+    cat help_master.txt
 fi
