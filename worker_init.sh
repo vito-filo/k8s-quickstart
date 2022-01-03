@@ -30,7 +30,7 @@ do
         ;;
     esac
 done
-if [[ $ip != "" && $token!="" &&  $discovery_token!="" ]]
+if [[ $cluster_ip != "" && $token!="" &&  $ca!="" ]]
 then
     printf "${RED}Step 1/3: install Docker ${NC}\n"
     sudo apt-get update && sudo apt-get install -qy docker.io
@@ -40,7 +40,7 @@ then
     sudo apt-get update && sudo apt-get install -yq kubelet kubeadm kubernetes-cni
     sudo apt-mark hold kubelet kubeadm kubectl
     printf "${RED}Step 3/3: Join the cluster ${NC}\n"
-    kubeadm join $ip --token $token --discovery-token-ca-cert-hash $ca
+    kubeadm join $cluster_ip --token $token --discovery-token-ca-cert-hash $ca
 else
     echo "Invalid parameters";
     cat worker_help.txt
