@@ -32,16 +32,21 @@ do
 done
 if [[ $cluster_ip != "" && $token!="" &&  $ca!="" ]]
 then
-    printf "${RED}Step 1/3: install Docker ${NC}\n"
-    sudo apt-get update && sudo apt-get install -qy docker.io
-    sudo apt-get update && sudo apt-get install -y apt-transport-https
-    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-    printf "${RED}Step 2/3: install Kubernetes tools ${NC}\n"
-    echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list && sudo apt-get update
-    sudo apt-get update && sudo apt-get install -yq kubelet kubeadm kubernetes-cni
-    sudo apt-mark hold kubelet kubeadm kubectl
+    # Setup configuration
+    printf "${RED}Step 1/3: Setup installation ${NC}\n"
+    apt-get update && apt-get install -y apt-transport-https
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+    cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+    deb http://apt.kubernetes.io/ kubernetes-xenial main
+    EOF
+
+    # Install kubelet kubeadm kubectl docker.io
+    printf "${RED}Step 2/3: install k8s tools and Docker ${NC}\n"
+    apt-get update
+    apt-get install -y kubelet=1.15.4-00 kubeadm=1.15.4-00 kubectl=1.15.4-00 docker.io
+    
     printf "${RED}Step 3/3: Join the cluster ${NC}\n"
-    kubeadm join $cluster_ip --token $token --discovery-token-ca-cert-hash $ca
+    kubeadm join --token $token $ip --discovery-token-ca-cert-hash $ca
 else
     echo "Invalid parameters";
     cat worker_help.txt
