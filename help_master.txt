@@ -1,0 +1,3 @@
+Mandatory arguments:
+
+-i, --ip                        ip of k8s cluster, usually ip of the master node
