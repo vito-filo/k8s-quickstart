@@ -34,7 +34,8 @@ if [[ $cluster_ip != "" && $token!="" &&  $ca!="" ]]
 then
     printf "${RED}Step 1/3: install Docker ${NC}\n"
     sudo apt-get update && sudo apt-get install -qy docker.io
-    sudo apt-get update && sudo apt-get install -y apt-transport-https && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - OK
+    sudo apt-get update && sudo apt-get install -y apt-transport-https
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
     printf "${RED}Step 2/3: install Kubernetes tools ${NC}\n"
     echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list && sudo apt-get update
     sudo apt-get update && sudo apt-get install -yq kubelet kubeadm kubernetes-cni
