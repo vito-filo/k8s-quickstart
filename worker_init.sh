@@ -5,7 +5,7 @@ for arg in "$@"
 do
     case $arg in
         -i | --ip)
-            cluster_ip=$2
+            ip=$2
             shift
             shift
         ;;
