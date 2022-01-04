@@ -20,12 +20,12 @@ do
             shift
         ;;
         -h|--help)
-            cat worker_help.txt
+            cat help_worker.txt
             exit 1
         ;;
         -*|--*)
             echo "Unknown argument $1"
-            cat worker_help.txt
+            cat help_worker.txt
             exit 1
         ;;
     esac
@@ -49,5 +49,5 @@ EOF
     kubeadm join --token $token $ip --discovery-token-ca-cert-hash $ca
 else
     echo "Invalid parameters";
-    cat worker_help.txt
+    cat help_worker.txt
 fi
